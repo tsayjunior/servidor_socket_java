@@ -37,7 +37,6 @@ public class Servidor extends Observable implements Runnable{
     public void run() {
         ServerSocket servidor = null;
         Socket sc= null;
-//        final int PUERTO = 5000;
         DataInputStream in;
         DataOutputStream out;
 
@@ -48,21 +47,6 @@ public class Servidor extends Observable implements Runnable{
                 sc = servidor.accept();//este metodo se queda a la espera, esperando en esa linea, no ejecutara nada mas, hasta que venga algo
 //                //esto que devuelve es el socket del cliente, el socket del cliente es este
                 System.out.println("cliente Conectado");
-//                in = new DataInputStream(sc.getInputStream());
-////                out = new DataOutputStream(sc.getOutputStream());
-//                
-//                //leo el mensaje que me envia
-//                String mensaje = in.readUTF(); //esto se queda a la espera a que el cliente envie algo
-//                
-//                System.out.println(mensaje);
-//////                out.writeUTF("hola mundo desde el servidor !!");
-//                // metodos de los observables
-//                this.setChanged();//avisa que cambiara algo
-//                this.notifyObservers(mensaje);//lo que notifico, y se envia arriba
-//                this.clearChanged();//limpia 
-//
-//                sc.close(); //sierro el servidor del cliente
-//                System.out.println("clienteiente desconectado");
                 Clientes.add(sc);
             }
         } catch (IOException ex) {
