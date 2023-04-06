@@ -19,10 +19,18 @@ import java.util.logging.Logger;
 public class Cliente implements Runnable{
     
     
+    private String host;
     private int puerto;
     private String mensaje;
 
     public Cliente(int puerto, String mensaje) {
+        this.host = "127.0.0.1";
+        this.puerto = puerto;
+        this.mensaje = mensaje;
+    }
+
+    public Cliente(String host, int puerto, String mensaje) {
+        this.host = host;
         this.puerto = puerto;
         this.mensaje = mensaje;
     }
@@ -31,13 +39,13 @@ public class Cliente implements Runnable{
 
     @Override
     public void run() {
-        final String HOST = "127.0.0.1";
+//        final String HOST = "127.0.0.1"1;
 //            final int PUERTO = 5000;
 //            DataInputStream in;
             DataOutputStream out;
             
         try {
-            Socket sc = new Socket(HOST, puerto);
+            Socket sc = new Socket(host, puerto);
 ////            in = new DataInputStream(sc.getInputStream());
             out = new DataOutputStream(sc.getOutputStream());
             
