@@ -44,7 +44,8 @@ public class Servidor extends Observable implements Runnable{
             servidor = new ServerSocket(puerto);
             System.out.println("Servidor Iniciado");
             while(true){
-                sc = servidor.accept();//este metodo se queda a la espera, esperando en esa linea, no ejecutara nada mas, hasta que venga algo
+                sc = servidor.accept();//este metodo se queda a la espera, esperando en esa linea, 
+                //no ejecutara nada mas, hasta que venga algo
 //                //esto que devuelve es el socket del cliente, el socket del cliente es este
                 System.out.println("cliente Conectado");
                 Clientes.add(sc);
@@ -53,5 +54,21 @@ public class Servidor extends Observable implements Runnable{
             Logger.getLogger(Serviidor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+    public void EnviarInfo(String[] nombres, double[] valores){
+        
+        for (Socket sock : Clientes) {
+            try {
+                DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
+                for (int i = 0; i < nombres.length; i++) {
+                    dos.writeUTF(nombres[i]);                    
+//                    dos.writeUTF("prueba que es para que vaya a consola");
+
+                    dos.writeDouble(valores[i]);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+    }
 }

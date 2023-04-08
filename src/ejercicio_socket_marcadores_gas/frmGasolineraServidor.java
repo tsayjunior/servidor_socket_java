@@ -122,6 +122,11 @@ public class frmGasolineraServidor extends javax.swing.JFrame {
         double diesel = Double.parseDouble(this.txtDiesel.getText());                                             
         double gasolinaPlomo = Double.parseDouble(this.txtGasolinaPlomo.getText());                                             
         double dieselOptima = Double.parseDouble(this.txtDieselOptima.getText());
+        
+        String[] nombres = {"diesel", "gasolinaPlomo", "dieselOptima"};
+        double[] valores = {diesel, gasolinaPlomo, dieselOptima};
+        
+        s.EnviarInfo(nombres, valores);
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     /**
