@@ -57,40 +57,40 @@ public class Cliente extends Observable implements Runnable{
 //            System.out.println("entra a cliente recien inicializado");
 
 //                System.out.println("antes de ois");
-//            ObjectInputStream ois = new ObjectInputStream(sc.getInputStream());
+            ObjectInputStream ois = new ObjectInputStream(sc.getInputStream());
 //                System.out.println("desoues de ois");
             String nombre;
             double valor;
             
             while (true) {                
-                System.out.println("antes de nombre");
-                nombre = dis.readUTF();
-                System.out.println("despues de nombre");
-                this.setChanged();
-                this.notifyObservers(nombre);
-                this.clearChanged();
-                
-                valor = dis.readDouble();
-                this.setChanged();
-                this.notifyObservers(valor);
-                this.clearChanged();
-                
-//                System.out.println("antes de gasolinera");
-//                Gasolinera g = (Gasolinera) ois.readObject();
-//                System.out.println("luego de gasolinera");
+//                System.out.println("antes de nombre");
+//                nombre = dis.readUTF();
+//                System.out.println("despues de nombre");
 //                this.setChanged();
-//                this.notifyObservers(g);
+//                this.notifyObservers(nombre);
 //                this.clearChanged();
+//                
+//                valor = dis.readDouble();
+//                this.setChanged();
+//                this.notifyObservers(valor);
+//                this.clearChanged();
+                
+                System.out.println("antes de gasolinera");
+                Gasolinera g = (Gasolinera) ois.readObject();
+                System.out.println("luego de gasolinera");
+                this.setChanged();
+                this.notifyObservers(g);
+                this.clearChanged();
             }
             
         } catch (IOException ex) {
             System.out.println("entra a IOException ex");
             Logger.getLogger(serviidor_tcp.Cliente.class.getName()).log(Level.SEVERE, null, ex);
         } 
-//        catch (ClassNotFoundException ex) {
-//            System.out.println("entra a ClassNotFoundException ex");
-//            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        catch (ClassNotFoundException ex) {
+            System.out.println("entra a ClassNotFoundException ex");
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     public void sendMessageToServe(String[] nombres, double[] valores){
         
