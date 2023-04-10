@@ -19,9 +19,12 @@ public class frmGasolineraCliente extends javax.swing.JFrame implements Observer
      */
     
     private String nombreProductoActual;
+    private Cliente c;
+    
     public frmGasolineraCliente() {
         initComponents();
-        Cliente c = new Cliente(5000);
+        c = new Cliente(5000);
+        c.initCliente();
         c.addObserver(this);
         Thread t = new Thread(c);
         t.start();
@@ -42,6 +45,7 @@ public class frmGasolineraCliente extends javax.swing.JFrame implements Observer
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        btnSendAll = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,21 +55,31 @@ public class frmGasolineraCliente extends javax.swing.JFrame implements Observer
 
         jLabel3.setText("Diesel Optima");
 
+        btnSendAll.setText("Enviar A Todos");
+        btnSendAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendAllActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtDiesel, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
-                    .addComponent(txtGasolinaPlomo)
-                    .addComponent(txtDieselOptima))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnSendAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(44, 44, 44)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDiesel, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                            .addComponent(txtGasolinaPlomo)
+                            .addComponent(txtDieselOptima))))
                 .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
@@ -83,11 +97,24 @@ public class frmGasolineraCliente extends javax.swing.JFrame implements Observer
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDieselOptima, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(btnSendAll, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSendAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendAllActionPerformed
+        double diesel = Double.parseDouble(this.txtDiesel.getText());                                             
+        double gasolinaPlomo = Double.parseDouble(this.txtGasolinaPlomo.getText());                                             
+        double dieselOptima = Double.parseDouble(this.txtDieselOptima.getText());
+        
+        String[] nombres = {"diesel", "gasolinaPlomo", "dieselOptima"};
+        double[] valores = {diesel, gasolinaPlomo, dieselOptima};
+        
+        c.sendMessageToServe(nombres, valores);
+    }//GEN-LAST:event_btnSendAllActionPerformed
 
     /**
      * @param args the command line arguments
@@ -127,7 +154,13 @@ public class frmGasolineraCliente extends javax.swing.JFrame implements Observer
     @Override
     public void update(Observable o, Object arg) {
      
-        if(arg instanceof  String){
+        if(arg instanceof Gasolinera){
+            Gasolinera g = (Gasolinera) arg;
+            
+            this.txtDiesel.setText(g.getDiesel()+"");
+            this.txtGasolinaPlomo.setText(g.getGasolinaPlomo()+"");
+            this.txtDieselOptima.setText(g.getDieselPlomo()+"");
+        }else if(arg instanceof  String){
                nombreProductoActual = (String) arg;
         }else{
             double valor = (double) arg;
@@ -147,6 +180,7 @@ public class frmGasolineraCliente extends javax.swing.JFrame implements Observer
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSendAll;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

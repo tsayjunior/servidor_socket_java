@@ -34,7 +34,8 @@ public class Serviidor {
             servidor = new ServerSocket(PUERTO);
             System.out.println("Servidor Iniciado");
             while(true){
-                sc = servidor.accept();//este metodo se queda a la espera, esperando en esa linea, no ejecutara nada mas, hasta que venga algo
+                sc = servidor.accept();//este metodo se queda a la espera, esperando en esa linea, no ejecutara nada mas, 
+                //hasta que venga algo
                 //esto que devuelve es el socket del cliente, el socket del cliente es este
                 System.out.println("cliente Conectado");
                 in = new DataInputStream(sc.getInputStream());

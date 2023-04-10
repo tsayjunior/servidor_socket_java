@@ -9,6 +9,7 @@ package ejercicio_socket_marcadores_gas;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -21,15 +22,16 @@ import serviidor_tcp.Serviidor;
  *
  * @author hp
  */
-public class Servidor extends Observable implements Runnable{
+public class Servidor implements Runnable{
 
     private ArrayList<Socket> Clientes;
     private int puerto;
-
+    private int auxCant;
+    
     public Servidor(int puerto) {
         this.puerto = puerto;
         this.Clientes = new ArrayList();
-
+        this.auxCant = 0;
     }
     
     
@@ -46,16 +48,55 @@ public class Servidor extends Observable implements Runnable{
             while(true){
                 sc = servidor.accept();//este metodo se queda a la espera, esperando en esa linea, 
                 //no ejecutara nada mas, hasta que venga algo
-//                //esto que devuelve es el socket del cliente, el socket del cliente es este
+                //esto que devuelve es el socket del cliente, el socket del cliente es este
                 System.out.println("cliente Conectado");
                 Clientes.add(sc);
+                
+                
+//                in = new DataInputStream(sc.getInputStream());
+                System.out.println("entra a while ");
+                //leo el mensaje que me envia
+//                String mensaje = in.readUTF(); //esto se queda a la espera a que el cliente envie algo
+//                int cant = in.readInt();
+//                double aux = in.readDouble();
+//                getOfClient(mensaje, cant, aux);
+                
+//                System.out.println(mensaje);
             }
         } catch (IOException ex) {
             Logger.getLogger(Serviidor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public void getOfClient(String mensaje, int cant, double aux){
+        System.out.println("entra a getOfClient");
+        if(auxCant == 0){
+            System.out.println("mensaje = > " + mensaje);
+            System.out.println("cant = > " + cant);
+            System.out.println("aux = > " + aux);
+        }else{
+            
+        }
+    }
+    public void EnviarInfoObject(Gasolinera g){
+        System.out.println("entra a EnviarInfoObject");
+        for (Socket sock : Clientes) {
+            try {
+                ObjectOutputStream oos = new ObjectOutputStream(sock.getOutputStream());
+                oos.writeObject(g);
+                oos.close(); 
+            } catch (IOException ex) {
+                System.out.println("entra a IOException ex de servidor");
+               Logger.getLogger("entra xd", "prueba");
+                Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        
+        System.out.println("salir a EnviarInfoObject");
+    }
     public void EnviarInfo(String[] nombres, double[] valores){
         
+        System.out.println("entra a EnviarInfo");
         for (Socket sock : Clientes) {
             try {
                 DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
@@ -70,5 +111,6 @@ public class Servidor extends Observable implements Runnable{
             }
             
         }
+        System.out.println("salir a EnviarInfo");
     }
 }

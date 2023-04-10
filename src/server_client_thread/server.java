@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author hp
  */
 public class server {
-
+    
     // Puerto que se utilizará para la conexión de clientes
     private static final int PUERTO = 12345;
     
