@@ -8,7 +8,6 @@ package servidorSocketEst;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,16 +15,14 @@ import javax.swing.event.EventListenerList;
 
 /**
  *
- * @author Junior Javier
+ * @author hp
  */
-public class HiloConexiones extends Thread {
-
-    Socket socket;
-    ServerSocket servidor;
+public class HiloConexion extends Thread {
+    
     DataInputStream in;
     DataOutputStream out;
-
-    // ----------------- eventos ----------------------------
+    Socket socket;
+// ----------------- eventos ----------------------------
     protected EventListenerList listenerList = new EventListenerList();
 
     public void addMyEventListener(SocketEventListenner listener) {
@@ -36,45 +33,48 @@ public class HiloConexiones extends Thread {
         listenerList.remove(SocketEventListenner.class, listener);
     }
 
-    void fireMyEvent(ConnectEvent evt) {
+    void fireMyEvent(DataEvent evt) {
         Object[] listeners = listenerList.getListenerList();
         for (int i = 0; i < listeners.length; i = i + 2) {
             if (listeners[i] == SocketEventListenner.class) {
-                ((SocketEventListenner) listeners[i + 1]).myEventOccurred(evt);
+                ((SocketEventListenner) listeners[i + 1]).onReader(evt);
             }
         }
     }
     
     
     // fin eventos
-    public HiloConexiones(ServerSocket servidor) {
-        this.servidor = servidor;
+    public HiloConexion(Socket sc) {
+        socket = sc;
     }
-
+    
     @Override
-    public void run() {
-
-        try {
-            System.out.println("entra a run en cliente Conexiones ");
-            while (true) {
-                socket = servidor.accept();
-                
-                ConnectEvent ce = new ConnectEvent(socket);
-//                addMyEventListener(ce);
-                fireMyEvent(ce);
-                
+    public void run(){
+        while (true) {            
+            
+            try {
 //                in = new DataInputStream(socket.getInputStream());
 //                out = new DataOutputStream(socket.getOutputStream());
+                while (true) {
+                
+                
+                in = new DataInputStream(socket.getInputStream());
+//                out = new DataOutputStream(socket.getOutputStream());
                 //envio mensaje del cliente
+                
+                String mensaje = in.readUTF();
+                DataEvent ce = new DataEvent(mensaje);
+//                addMyEventListener(ce);
+                fireMyEvent(ce);
 //                out.writeUTF("Hola mundo desde Hilo Conexiones !!!");
                 //Recibo el mensaje del servidor
-//                String mensaje = in.readUTF();
 //                System.out.println(mensaje);
 
             }
-        } catch (IOException ex) {
-            Logger.getLogger(HiloConexiones.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(HiloConexion.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
     }
+    
 }

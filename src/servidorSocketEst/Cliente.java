@@ -36,7 +36,8 @@ public class Cliente {
             in = new DataInputStream(sc.getInputStream());
             out = new DataOutputStream(sc.getOutputStream());
             System.out.println("entra a init cliente");
-                        
+            while (true) {                
+                
             //envio mensaje del cliente
             out.writeUTF("Hola mundo desde el cliente !!!");
             //Recibo el mensaje del servidor
@@ -44,7 +45,8 @@ public class Cliente {
 
             String mensaje = in.readUTF();
             System.out.println("despues de recibir mensaje");
-            System.out.println(mensaje);
+//            System.out.println(mensaje);
+            }
         } catch (IOException ex) {
             Logger.getLogger(ejercicio_socket_marcadores_gas.Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -54,5 +56,7 @@ public class Cliente {
     public static void main(String[] args) {
         Cliente c = new Cliente();
         c.initCliente();
+        Cliente c2 = new Cliente();
+        c2.initCliente();
     }
 }

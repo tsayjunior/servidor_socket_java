@@ -17,7 +17,12 @@ public class ConnectEvent extends EventObject {
     
     public static Socket sc;
 
-    public ConnectEvent(ServerSocket o) {
+    public ConnectEvent(Socket o) {
         super(o);
+        sc = o;
     }
+    public Socket sendSocket(){
+        return sc;
+    }
+    
 }

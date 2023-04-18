@@ -15,7 +15,11 @@ public class DataEvent extends EventObject {
     
     public static String data;
 
-    public DataEvent(Object o) {
+    public DataEvent(String o) {
         super(o);
+        data = o;
+    }
+    public String sendMessage(){
+        return data;
     }
 }

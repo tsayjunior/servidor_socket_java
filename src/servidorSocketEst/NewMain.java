@@ -15,7 +15,8 @@ public class NewMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-         Servidor.correrServidor();
+        Servidor s = new Servidor();
+         s.correrServidor();
 //         Cliente c = new Cliente();
          
     }
